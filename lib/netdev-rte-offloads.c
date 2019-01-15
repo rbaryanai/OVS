@@ -414,7 +414,8 @@ static void netdev_rte_port_free(struct netdev_rte_port * rte_port)
                         CONST_CAST(struct cmap_node *, &rte_port->node), hash);
             netdev_rte_free_table_id(rte_port->table_id);
             netdev_rte_reserved_mark_free(rte_port->special_mark);
-            cmap_remove(&mark_to_rte_port, CONST_CAST(struct cmap_node *,
+            cmap_remove(&mark_to_rte_port, 
+                        CONST_CAST(struct cmap_node *,
                         &rte_port->mark_node),
                         hash_bytes(&rte_port->special_mark,
                         sizeof(rte_port->special_mark),0));
@@ -1492,7 +1493,7 @@ static void netdev_rte_port_preprocess(struct netdev_rte_port * rte_port,
         case RTE_PORT_TYPE_VXLAN:
             {
                 // VXLAN table failed to match on HW. we do however
-                // no the port-id so we just pop it here.
+                // know the port-id so we just pop it here.
                 if (rte_port->netdev->netdev_class->pop_header) { 
                     rte_port->netdev->netdev_class->pop_header(packet);
                     packet->md.in_port.odp_port = rte_port->port_no;
@@ -1502,6 +1503,7 @@ static void netdev_rte_port_preprocess(struct netdev_rte_port * rte_port,
             break;
         case RTE_PORT_TYPE_NONE:
         case RTE_PORT_TYPE_DPDK:
+            VLOG_WARN("port type %d has no pre-process",rte_port->rte_port_type);
             break;
 
     }
@@ -1512,6 +1514,10 @@ static void netdev_rte_port_preprocess(struct netdev_rte_port * rte_port,
 /**
  * @brief - we got a packet with special mark, means we need to run 
  *  pre-processing on the packet so it could be processed by the OVS SW.
+ *  example for such case in vxlan is where we get match on outer
+ *  vxlan so we jump to vxlan table, but then we fail on inner match.
+ *  In this case we need to make sure SW processing continues from second flow
+ *
  *
  * @param packet
  * @param mark
