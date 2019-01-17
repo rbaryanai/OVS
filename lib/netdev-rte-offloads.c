@@ -36,6 +36,7 @@
 #include "netdev.h"
 #include <rte_flow.h>
 #include "dp-packet.h"
+#include "rte-flow-sim.h"
 
 VLOG_DEFINE_THIS_MODULE(netdev_rte_offload);
 
@@ -1435,6 +1436,8 @@ netdev_dpdk_add_rte_flow_offload(struct netdev_rte_port *rte_port,
                      netdev_get_name(netdev), error.type, error.message);
             goto out;
         }
+     //      rte_flow_create_sim(rte_port->dpdk_port_id, &flow_attr, patterns.items,
+      //                     actions.actions, &error);
     }
 
 out:

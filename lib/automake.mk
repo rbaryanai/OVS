@@ -135,6 +135,7 @@ lib_libopenvswitch_la_SOURCES = \
 	lib/netdev-dpdk.h \
 	lib/netdev-rte-offloads.h \
 	lib/netdev-offload-api.h \
+	lib/rte-flow-sim.h \
 	lib/netdev-dummy.c \
 	lib/netdev-provider.h \
 	lib/netdev-vport.c \
@@ -409,6 +410,7 @@ if DPDK_NETDEV
 lib_libopenvswitch_la_SOURCES += \
 	lib/dpdk.c \
 	lib/netdev-dpdk.c \
+	lib/rte-flow-sim.c \
 	lib/netdev-rte-offloads.c
 else
 lib_libopenvswitch_la_SOURCES += \
