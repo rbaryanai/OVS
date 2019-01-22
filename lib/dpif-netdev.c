@@ -1,3 +1,4 @@
+#include "rte-flow-sim.h"
 /*
  * Copyright (c) 2009, 2010, 2011, 2012, 2013, 2014, 2016, 2017 Nicira, Inc.
  *
@@ -5922,6 +5923,7 @@ dfc_processing(struct dp_netdev_pmd_thread *pmd,
             pkt_metadata_init(&packet->md, port_no);
         }
 
+rte_flow_sim_preprocess_pkt(packet);
         if ((*recirc_depth_get() == 0) &&
             dp_packet_has_flow_mark(packet, &mark)) {
             flow = mark_to_flow_find(pmd, mark);
