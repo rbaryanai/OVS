@@ -51,9 +51,10 @@ int netdev_rte_offloads_flow_put(struct netdev *netdev, struct match *match,
 int netdev_rte_offloads_flow_del(struct netdev *netdev, const ovs_u128 *ufid,
                                  struct dpif_flow_stats *stats);
 
-int netdev_rte_dpdk_ct_put(struct ct_flow_offload_item *,struct offload_info *info);
+int netdev_dpdk_offload_ct_put(struct ct_flow_offload_item *ct_offload,
+                           struct offload_info *info);
 
-int netdev_rte_dpdk_ct_del(struct offload_info *info);
+int netdev_dpdk_offload_ct_del(struct offload_info *info);
 
 #define DPDK_FLOW_OFFLOAD_API                   \
     .flow_put = netdev_rte_offloads_flow_put,   \
